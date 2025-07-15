@@ -15,16 +15,15 @@
 
 ```
 project
+|     db
+|     |   data.json
 |     src
 |     |
-|     |constant
+|     |___
+|     |   constant
 |     |   |   messages.js
 |     |   controllers
 |     |   |   product.controller.js
-|     |   db
-|     |   |   data.json
-|     |   helper
-|     |   |   validateInput.helper.js
 |     |   middlewares
 |     |   |   validation.middleware.js
 |     |   |   index.js
