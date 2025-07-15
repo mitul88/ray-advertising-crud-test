@@ -24,6 +24,8 @@ project
 |     |   |   messages.js
 |     |   controllers
 |     |   |   product.controller.js
+|     |   helper
+|     |   |   idGenerator.js
 |     |   middlewares
 |     |   |   validation.middleware.js
 |     |   |   index.js

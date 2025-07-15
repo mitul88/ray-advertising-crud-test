@@ -5,15 +5,14 @@ const {
   SUCCESS_MESSAGES,
   FAILED_MESSAGES,
 } = require("../constant/messages");
+const { generateId } = require("../helper/idGenerator.helper");
 
 const rootDirectory = process.cwd();
 const dbPath = path.join(rootDirectory, "/db/data.json");
 
 module.exports.create = async (req, res) => {
   const bodyData = await req.body;
-  const newId = crypto.randomUUID();
-  const id = newId.split("-").join("");
-
+  const id = generateId();
   const newProduct = { id, ...bodyData };
   try {
     const data = fs.readFileSync(dbPath, "utf-8");
@@ -52,6 +51,11 @@ module.exports.viewProduct = async (req, res) => {
     const product = jsonData.find((item) => {
       return item.id === id;
     });
+    if (!product) {
+      return res
+        .status(400)
+        .send({ message: FAILED_MESSAGES.PRODUCT_NOT_FOUND });
+    }
     return res.status(200).send({
       message: product
         ? SUCCESS_MESSAGES.PRODUCT_FETCHED
@@ -69,6 +73,14 @@ module.exports.deleteProduct = async (req, res) => {
   try {
     const data = fs.readFileSync(dbPath, "utf-8");
     const jsonData = JSON.parse(data);
+    const itemExists = jsonData.find((item) => {
+      return item.id === id;
+    });
+    if (!itemExists) {
+      return res
+        .status(400)
+        .send({ message: FAILED_MESSAGES.PRODUCT_NOT_FOUND });
+    }
     const products = jsonData.filter((item) => {
       return item.id !== id;
     });
@@ -89,6 +101,11 @@ module.exports.updateProduct = async (req, res) => {
     const product = jsonData.find((item) => {
       return item.id === id;
     });
+    if (!product) {
+      return res
+        .status(400)
+        .send({ messsage: FAILED_MESSAGES.PRODUCT_NOT_FOUND });
+    }
     product["title"] = bodyData["title"];
     product["description"] = bodyData["description"];
     fs.writeFileSync(dbPath, JSON.stringify(jsonData));
