@@ -2,7 +2,7 @@ const { FAILED_MESSAGES } = require("../constant/messages");
 
 module.exports.productDetailsValidation = async (req, res, next) => {
   const bodyData = await req.body;
-  if (!bodyData["title"] || !bodyData["description"]) {
+  if (!bodyData || !bodyData["title"] || !bodyData["description"]) {
     return res
       .status(400)
       .send({ message: FAILED_MESSAGES.INFORMATION_MISSING });
